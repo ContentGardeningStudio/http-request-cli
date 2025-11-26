@@ -9,6 +9,7 @@ description = "Example project: HTTP request CLI implemented with argparse and T
 authors = [{ name = "Example Author" }]
 requires-python = ">=3.10"
 dependencies = [
+    "httpx>=0.28.1",
     "requests>=2.0.0",
     "typer>=0.12.0",
 ]

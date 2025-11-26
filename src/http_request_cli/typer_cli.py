@@ -1,5 +1,6 @@
-
 import typer
+import requests
+import httpx
 
 app = typer.Typer(help="Simple HTTP client implemented with Typer.")
 
@@ -71,5 +72,18 @@ def request(
     pass
 
 
+def make_request(method: str, url: str, debug: bool = False):
+    response = requests.get(url)
+
+    if method == "httpx":
+        response = httpx.get(url)
+    print(f"Response Status Code: {response.status_code}")
+
+    if debug:
+        print("Debug mode is enabled.")
+        print(f"Response Headers: {response.headers}")
+
+
 if __name__ == "__main__":
-    app()
+    # app()
+    typer.run(make_request)

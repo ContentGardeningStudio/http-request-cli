@@ -1,5 +1,6 @@
 import argparse
-
+import requests
+import httpx
 
 
 # def parse_headers(raw_headers: List[str]) -> Dict[str, str]:
@@ -25,6 +26,11 @@ def main(argv: list[str] | None = None) -> None:
         "url",
         help="URL to request (e.g. https://httpbin.org/get)",
     )
+    parser.add_argument(
+        "method", type=str, help="Which method to use", choices=["requests", "httpx"]
+    )
+    parser.add_argument("--debug", action="store_true", help="Enable debug mode.")
+
     # parser.add_argument(
     #     "-X",
     #     "--method",
@@ -48,6 +54,15 @@ def main(argv: list[str] | None = None) -> None:
 
     args = parser.parse_args(argv)
     print(args)
+
+    response = requests.get(args.url)
+    if args.method == "httpx":
+        response = httpx.get(args.url)
+
+    print(f"Response Status Code: {response.status_code}")
+    if args.debug:
+        print("Debug mode is enabled.")
+        print(f"Response Headers: {response.headers}")
 
     # try:
     #     headers = parse_headers(args.header)
