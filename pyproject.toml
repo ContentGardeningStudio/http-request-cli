@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "http-request-cli"
+version = "0.1.0"
+description = "Example project: HTTP request CLI implemented with argparse and Typer."
+authors = [{ name = "Example Author" }]
+requires-python = ">=3.10"
+dependencies = [
+    "requests>=2.0.0",
+    "typer>=0.12.0",
+]
+
+[project.scripts]
+http-argparse = "http_request_cli.argparse_cli:main"
+http-typer = "http_request_cli.typer_cli:app"
+
+[tool.setuptools.packages.find]
+where = ["src"]
