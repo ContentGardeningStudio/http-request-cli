@@ -27,7 +27,7 @@ def main(argv: list[str] | None = None) -> None:
         help="URL to request (e.g. https://httpbin.org/get)",
     )
     parser.add_argument(
-        "method", type=str, help="Which method to use", choices=["requests", "httpx"]
+        "lib", type=str, help="Which lib to use", choices=["requests", "httpx"]
     )
     parser.add_argument("--debug", action="store_true", help="Enable debug mode.")
 
@@ -56,7 +56,7 @@ def main(argv: list[str] | None = None) -> None:
     print(args)
 
     response = requests.get(args.url)
-    if args.method == "httpx":
+    if args.lib == "httpx":
         response = httpx.get(args.url)
 
     print(f"Response Status Code: {response.status_code}")

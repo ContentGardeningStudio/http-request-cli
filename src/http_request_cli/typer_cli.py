@@ -28,6 +28,16 @@ def request(
         ...,
         help="URL to request (e.g. https://httpbin.org/get)",
     ),
+    lib: str = typer.Argument(
+            "requests",
+            help="Lib to use (requests or httpx)",
+        ),
+    debug: bool = typer.Option(
+        False,
+        "-d",
+        "--debug",
+        help="Only print the response body, no metadata.",
+    ),
     # method: str = typer.Option(
     #     "GET",
     #     "-X",
@@ -68,14 +78,23 @@ def request(
     #     typer.echo("-" * 40)
 
     # typer.echo(response.text)
+    response = requests.get(url)
+
+    if lib == "httpx":
+        response = httpx.get(url)
+    typer.echo(f"Response Status Code: {response.status_code}")
+
+    if debug:
+        typer.echo("Debug mode is enabled.")
+        typer.echo(f"Response Headers: {response.headers}")
 
     pass
 
 
-def make_request(method: str, url: str, debug: bool = False):
+def make_request(url: str, lib: str, debug: bool = False):
     response = requests.get(url)
 
-    if method == "httpx":
+    if lib == "httpx":
         response = httpx.get(url)
     print(f"Response Status Code: {response.status_code}")
 
