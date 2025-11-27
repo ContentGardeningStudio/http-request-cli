@@ -29,7 +29,7 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument(
         "lib", type=str, help="Which lib to use", choices=["requests", "httpx"]
     )
-    parser.add_argument("--debug", action="store_true", help="Enable debug mode.")
+    # parser.add_argument("--debug", action="store_true", help="Enable debug mode.")
 
     # parser.add_argument(
     #     "-X",
@@ -55,14 +55,21 @@ def main(argv: list[str] | None = None) -> None:
     args = parser.parse_args(argv)
     print(args)
 
-    response = requests.get(args.url)
     if args.lib == "httpx":
         response = httpx.get(args.url)
+    elif args.lib == "requests":
+        try:
+            response = requests.get(args.url)
+        except requests.RequestException as e:
+            print(f"Request failed: {e}")
+            response.raise_for_status()
+    else:
+        print("You need to provide something valid for the lib option: httpx or requests")
+        response = None
 
-    print(f"Response Status Code: {response.status_code}")
-    if args.debug:
-        print("Debug mode is enabled.")
-        print(f"Response Headers: {response.headers}")
+    if response is not None:
+        print(f"Response Status Code: {response.status_code}")
+
 
     # try:
     #     headers = parse_headers(args.header)
